@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Professional Scientific Calculator with Graphing, Programmer, and Programmable Modes">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SciCalc Pro">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>SciCalc Pro — Scientific Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Mode Tabs -->
+    <nav id="mode-tabs" role="tablist">
+      <button class="tab active" data-mode="scientific" role="tab" aria-selected="true" id="tab-scientific">
+        <span class="tab-icon">𝑓𝑥</span>
+        <span class="tab-label">Scientific</span>
+      </button>
+      <button class="tab" data-mode="graphing" role="tab" aria-selected="false" id="tab-graphing">
+        <span class="tab-icon">📈</span>
+        <span class="tab-label">Graph</span>
+      </button>
+      <button class="tab" data-mode="programmer" role="tab" aria-selected="false" id="tab-programmer">
+        <span class="tab-icon">⟨/⟩</span>
+        <span class="tab-label">Programmer</span>
+      </button>
+      <button class="tab" data-mode="programmable" role="tab" aria-selected="false" id="tab-programmable">
+        <span class="tab-icon">⚙</span>
+        <span class="tab-label">Custom</span>
+      </button>
+    </nav>
+
+    <!-- ==================== SCIENTIFIC MODE ==================== -->
+    <section id="mode-scientific" class="mode-panel active">
+      <div class="display-area">
+        <div id="sci-history" class="history-line"></div>
+        <div id="sci-expression" class="expression-line"></div>
+        <div id="sci-result" class="result-line">0</div>
+        <div class="angle-indicator">
+          <button id="angle-toggle" class="angle-btn">DEG</button>
+          <span id="memory-indicator" class="mem-badge hidden">M</span>
+        </div>
+      </div>
+      <div class="sci-buttons">
+        <!-- Row 1: Advanced functions -->
+        <button class="btn fn" data-action="second">2nd</button>
+        <button class="btn fn" data-action="pi">π</button>
+        <button class="btn fn" data-action="e">𝑒</button>
+        <button class="btn fn" data-action="clear">C</button>
+        <button class="btn fn del" data-action="backspace">⌫</button>
+        <!-- Row 2 -->
+        <button class="btn fn" data-action="x²">x²</button>
+        <button class="btn fn" data-action="x³">x³</button>
+        <button class="btn fn" data-action="xⁿ">xⁿ</button>
+        <button class="btn fn" data-action="eˣ">eˣ</button>
+        <button class="btn fn" data-action="10ˣ">10ˣ</button>
+        <!-- Row 3 -->
+        <button class="btn fn" data-action="1/x">1/x</button>
+        <button class="btn fn" data-action="√">√x</button>
+        <button class="btn fn" data-action="³√">³√</button>
+        <button class="btn fn" data-action="ⁿ√">ⁿ√</button>
+        <button class="btn fn" data-action="ln">ln</button>
+        <!-- Row 4 -->
+        <button class="btn fn" data-action="log">log</button>
+        <button class="btn fn" data-action="sin">sin</button>
+        <button class="btn fn" data-action="cos">cos</button>
+        <button class="btn fn" data-action="tan">tan</button>
+        <button class="btn fn" data-action="n!">n!</button>
+        <!-- Row 5 -->
+        <button class="btn fn" data-action="abs">|x|</button>
+        <button class="btn fn" data-action="(">&#40;</button>
+        <button class="btn fn" data-action=")">&#41;</button>
+        <button class="btn fn" data-action="%">%</button>
+        <button class="btn op" data-action="÷">÷</button>
+        <!-- Row 6: Numbers + ops -->
+        <button class="btn fn" data-action="MC">MC</button>
+        <button class="btn num" data-action="7">7</button>
+        <button class="btn num" data-action="8">8</button>
+        <button class="btn num" data-action="9">9</button>
+        <button class="btn op" data-action="×">×</button>
+        <!-- Row 7 -->
+        <button class="btn fn" data-action="MR">MR</button>
+        <button class="btn num" data-action="4">4</button>
+        <button class="btn num" data-action="5">5</button>
+        <button class="btn num" data-action="6">6</button>
+        <button class="btn op" data-action="-">−</button>
+        <!-- Row 8 -->
+        <button class="btn fn" data-action="M+">M+</button>
+        <button class="btn num" data-action="1">1</button>
+        <button class="btn num" data-action="2">2</button>
+        <button class="btn num" data-action="3">3</button>
+        <button class="btn op" data-action="+">+</button>
+        <!-- Row 9 -->
+        <button class="btn fn" data-action="M-">M−</button>
+        <button class="btn num" data-action="±">±</button>
+        <button class="btn num" data-action="0">0</button>
+        <button class="btn num" data-action=".">.</button>
+        <button class="btn eq" data-action="=">=</button>
+      </div>
+    </section>
+
+    <!-- ==================== GRAPHING MODE ==================== -->
+    <section id="mode-graphing" class="mode-panel">
+      <div class="graph-controls">
+        <div class="fn-inputs" id="graph-fn-list">
+          <div class="fn-input-row" data-index="0">
+            <span class="fn-color" style="background:#ff6b6b;"></span>
+            <label>y =</label>
+            <input type="text" class="graph-fn-input" placeholder="e.g. sin(x)" value="sin(x)" data-index="0" id="graph-fn-0">
+            <button class="fn-remove-btn" data-index="0" title="Remove">✕</button>
+          </div>
+        </div>
+        <div class="graph-toolbar">
+          <button id="graph-add-fn" class="graph-tool-btn" title="Add function">+ Add</button>
+          <button id="graph-plot" class="graph-tool-btn primary" title="Plot">Plot</button>
+          <button id="graph-zoom-in" class="graph-tool-btn" title="Zoom In">🔍+</button>
+          <button id="graph-zoom-out" class="graph-tool-btn" title="Zoom Out">🔍−</button>
+          <button id="graph-reset" class="graph-tool-btn" title="Reset View">⟲</button>
+        </div>
+      </div>
+      <div class="graph-canvas-wrapper">
+        <canvas id="graph-canvas"></canvas>
+        <div id="graph-coords" class="graph-coords-overlay"></div>
+      </div>
+      <div class="graph-info-bar">
+        <span id="graph-x-range">x: [-10, 10]</span>
+        <span id="graph-y-range">y: [-10, 10]</span>
+      </div>
+    </section>
+
+    <!-- ==================== PROGRAMMER MODE ==================== -->
+    <section id="mode-programmer" class="mode-panel">
+      <div class="display-area prog-display">
+        <div id="prog-expression" class="expression-line"></div>
+        <div id="prog-result" class="result-line">0</div>
+        <div class="base-readouts">
+          <div class="base-row"><span class="base-label">HEX</span><span id="prog-hex" class="base-value">0</span></div>
+          <div class="base-row"><span class="base-label">DEC</span><span id="prog-dec" class="base-value active-base">0</span></div>
+          <div class="base-row"><span class="base-label">OCT</span><span id="prog-oct" class="base-value">0</span></div>
+          <div class="base-row"><span class="base-label">BIN</span><span id="prog-bin" class="base-value">0</span></div>
+        </div>
+      </div>
+      <div class="prog-base-selector">
+        <button class="base-btn" data-base="HEX" id="base-hex">HEX</button>
+        <button class="base-btn active" data-base="DEC" id="base-dec">DEC</button>
+        <button class="base-btn" data-base="OCT" id="base-oct">OCT</button>
+        <button class="base-btn" data-base="BIN" id="base-bin">BIN</button>
+        <button class="base-btn" data-bits="8" id="bits-8">8-bit</button>
+        <button class="base-btn active" data-bits="32" id="bits-32">32-bit</button>
+        <button class="base-btn" data-bits="64" id="bits-64">64-bit</button>
+      </div>
+      <div class="prog-buttons">
+        <!-- Row 1 -->
+        <button class="btn fn prog-hex-btn" data-action="A" disabled>A</button>
+        <button class="btn fn prog-hex-btn" data-action="B" disabled>B</button>
+        <button class="btn fn" data-action="clear">C</button>
+        <button class="btn fn del" data-action="backspace">⌫</button>
+        <!-- Row 2 -->
+        <button class="btn fn prog-hex-btn" data-action="C" disabled>C</button>
+        <button class="btn fn prog-hex-btn" data-action="D" disabled>D</button>
+        <button class="btn fn" data-action="AND">AND</button>
+        <button class="btn fn" data-action="OR">OR</button>
+        <!-- Row 3 -->
+        <button class="btn fn prog-hex-btn" data-action="E" disabled>E</button>
+        <button class="btn fn prog-hex-btn" data-action="F" disabled>F</button>
+        <button class="btn fn" data-action="XOR">XOR</button>
+        <button class="btn fn" data-action="NOT">NOT</button>
+        <!-- Row 4 -->
+        <button class="btn fn" data-action="<<">&lt;&lt;</button>
+        <button class="btn fn" data-action=">>">&gt;&gt;</button>
+        <button class="btn fn" data-action="MOD">MOD</button>
+        <button class="btn op" data-action="÷">÷</button>
+        <!-- Row 5: Numbers -->
+        <button class="btn num" data-action="7">7</button>
+        <button class="btn num" data-action="8">8</button>
+        <button class="btn num" data-action="9">9</button>
+        <button class="btn op" data-action="×">×</button>
+        <!-- Row 6 -->
+        <button class="btn num" data-action="4">4</button>
+        <button class="btn num" data-action="5">5</button>
+        <button class="btn num" data-action="6">6</button>
+        <button class="btn op" data-action="-">−</button>
+        <!-- Row 7 -->
+        <button class="btn num" data-action="1">1</button>
+        <button class="btn num" data-action="2">2</button>
+        <button class="btn num" data-action="3">3</button>
+        <button class="btn op" data-action="+">+</button>
+        <!-- Row 8 -->
+        <button class="btn fn" data-action="±">±</button>
+        <button class="btn num" data-action="0">0</button>
+        <button class="btn fn" data-action="00">00</button>
+        <button class="btn eq" data-action="=">=</button>
+      </div>
+    </section>
+
+    <!-- ==================== PROGRAMMABLE MODE ==================== -->
+    <section id="mode-programmable" class="mode-panel">
+      <div class="programmable-container">
+        <div class="prog-editor-header">
+          <h2>Custom Functions</h2>
+          <div class="prog-editor-actions">
+            <select id="prog-examples" class="prog-select">
+              <option value="">Load Example...</option>
+              <option value="quadratic">Quadratic Solver</option>
+              <option value="fibonacci">Fibonacci Sequence</option>
+              <option value="statistics">Statistics (Mean/StdDev)</option>
+              <option value="matrix2x2">2×2 Matrix Operations</option>
+              <option value="converter">Unit Converter</option>
+              <option value="prime">Prime Checker</option>
+            </select>
+          </div>
+        </div>
+        <div class="prog-editor-wrapper">
+          <textarea id="prog-editor" class="prog-editor" spellcheck="false" placeholder="// Write your JavaScript function here
+// Use 'output(value)' to display results
+// Use 'input(prompt)' to get user input
+//
+// Example:
+// function solve(a, b, c) {
+//   const d = b*b - 4*a*c;
+//   output('Discriminant: ' + d);
+//   if (d >= 0) {
+//     output('x₁ = ' + (-b + Math.sqrt(d)) / (2*a));
+//     output('x₂ = ' + (-b - Math.sqrt(d)) / (2*a));
+//   } else {
+//     output('No real roots');
+//   }
+// }
+// solve(1, -5, 6);
+"></textarea>
+        </div>
+        <div class="prog-run-bar">
+          <button id="prog-run" class="prog-run-btn">▶ Run</button>
+          <button id="prog-clear-output" class="prog-clear-btn">Clear Output</button>
+          <button id="prog-save" class="prog-save-btn">💾 Save</button>
+          <select id="prog-saved-list" class="prog-select">
+            <option value="">Load Saved...</option>
+          </select>
+        </div>
+        <div id="prog-input-area" class="prog-input-area hidden">
+          <label id="prog-input-label">Input:</label>
+          <input type="text" id="prog-input-field" class="prog-input-field" placeholder="Enter value...">
+          <button id="prog-input-submit" class="prog-input-submit">OK</button>
+        </div>
+        <div class="prog-output-wrapper">
+          <div id="prog-output" class="prog-output">
+            <span class="output-placeholder">Output will appear here...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="graph.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
